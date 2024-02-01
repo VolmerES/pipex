@@ -1,6 +1,7 @@
-a.out
+Makefile
 filein
 fileout
+inc
 libft
-ls
-pipex.c
+pipex
+src
