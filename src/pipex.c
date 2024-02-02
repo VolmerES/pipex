@@ -6,12 +6,34 @@
 /*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:35:18 by volmer            #+#    #+#             */
-/*   Updated: 2024/02/01 15:42:19 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/02/02 11:56:38 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "../inc/pipex.h"
+
+
+typedef enum
+{
+	FILE_PROBLEM,
+	COMMAND_ERROR,
+	MEMORY_ERROR
+} t_error;
+
+
+void exit_child(t_error code)
+{
+	if (code == FILE_PROBLEM)
+		perror("File problem");	
+	else if (code == COMMAND_ERROR)
+		perror("Command error");
+	else if (code == MEMORY_ERROR)
+		perror("Memory error");
+	else
+		printf("Error");
+	exit(1);
+}
 
 void	ft_execute(char *cmd, char **env)
 {
@@ -20,7 +42,11 @@ void	ft_execute(char *cmd, char **env)
 
 	command = ft_split(cmd, ' ');
 	path = ft_find_path(command, env);
-	execve(path, command, env);
+	if (execve(path, command, env) == -1);
+	{
+		perror("Execve failed");
+		exit(1);
+	}
 }
 
 void	ft_child_process_one(char **argv, char **env, int *fd)
@@ -30,7 +56,7 @@ void	ft_child_process_one(char **argv, char **env, int *fd)
 	filein = open(argv[1], O_RDONLY);
 	close(fd[0]);
 	if (filein == -1)
-		perror("Filein crashed");
+		perror("Filein crashed ");
 	dup2(filein, STDIN_FILENO);
 	close(filein);
 	dup2(fd[1], STDOUT_FILENO);
@@ -45,7 +71,11 @@ void	ft_child_process_two(char **argv, char **env, int *fd)
 	fileout = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	close(fd[1]);
 	if (fileout == -1)
+	{
 		perror("Filein crashed");
+		close(fd[0]);
+		exit(1);
+	}
 	dup2(fileout, STDOUT_FILENO);
 	close(fileout);
 	dup2(fd[0], STDIN_FILENO);
@@ -62,10 +92,10 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 5)
 		perror("Argumentos introducidos de manera incorrecta\n");
 	if (pipe(fd) == -1)
-		perror("Pipe crashed\n");
+		perror("Pipe crashed");
 	pid1 = fork();
 	if (pid1 == -1)
-		perror("Fork crashed\n");
+		perror("Fork crashed ");
 	if (pid1 == 0)
 		ft_child_process_one(argv, env, fd);
 	pid2 = fork();
