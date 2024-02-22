@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:42:35 by jdelorme          #+#    #+#             */
-/*   Updated: 2024/02/22 16:57:48 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/02/03 20:05:25 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,11 @@ char	*ft_access_check(char **cmd, char **path)
 	char	*slash;
 
 	i = 0;
-	if (ft_strchr(*cmd, '/') && (access(*cmd, X_OK) == 0))
-		return (*cmd);
-	if (ft_strchr(*cmd, '/') && access(*cmd, X_OK))
-		return (NULL); 
 	while (path[i])
 	{
 		slash = ft_strjoin("/", cmd[0]);
 		ac = ft_strjoin(path[i], slash);
-		if ((access(ac, X_OK) == 0))
+		if ((access(ac, 0) == 0))
 			return (ac);
 		i++;
 	}

@@ -11,7 +11,7 @@ CFLAGS = -Wall -Wextra -Werror
 FT_LIB = ./libft/libft.a
 
 all : $(NAME)
-	@echo "\x1b[32m Compilacion PIPEX: OK"
+#	@echo "\x1b[32m Compilacion PIPEX: OK"
 
 $(NAME) : $(OBJS) $(FT_LIB)
 	@$(CC) -Llibft -lft $(OBJS) -o $(NAME)

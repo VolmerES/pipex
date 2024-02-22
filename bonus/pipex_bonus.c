@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:35:18 by volmer            #+#    #+#             */
-/*   Updated: 2024/02/22 14:43:39 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/02/03 20:12:39 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_execute(char *cmd, char **env)
 
 	command = ft_split(cmd, ' ');
 	path = ft_find_path(command, env);
-	if (execve(path, command, env) == -1)
+	if (execve(path, command, env) == -1);
 	{
 		perror("Execve failed");
 		exit(1);
@@ -91,13 +91,15 @@ int	main(int argc, char **argv, char **env)
 
 	if (argc != 5)
 		perror("Argumentos introducidos de manera incorrecta\n");
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+	{
+		ft_here_doc(argv);
+	}
 	if (pipe(fd) == -1)
 		perror("Pipe crashed");
 	pid1 = fork();
 	if (pid1 == -1)
 		perror("Fork crashed ");
-	if (pid1 == 0)
-		ft_child_process_one(argv, env, fd);
 	pid2 = fork();
 	if (pid2 == -1)
 		perror("Fork crashed\n");
