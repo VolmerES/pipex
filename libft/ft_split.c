@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelorme <jdelorme@student.42madrid>       +#+  +:+       +#+        */
+/*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 15:06:22 by jdelorme          #+#    #+#             */
-/*   Updated: 2023/10/17 19:50:05 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:21:33 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_free(char **str)
 	int	i;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (str[i] != NULL)
 	{
 		free (str[i]);
 		i++;

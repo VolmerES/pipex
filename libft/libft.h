@@ -6,7 +6,7 @@
 /*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:15:37 by jdelorme          #+#    #+#             */
-/*   Updated: 2024/02/01 15:42:57 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:21:00 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stddef.h>
+# include <ctype.h>
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif
