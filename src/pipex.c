@@ -6,7 +6,7 @@
 /*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:35:18 by volmer            #+#    #+#             */
-/*   Updated: 2024/02/22 14:43:39 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:39:25 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	main(int argc, char **argv, char **env)
 	int	fd[2];
 	int	pid1;
 	int	pid2;
+	int	status;
 
 	if (argc != 5)
 		perror("Argumentos introducidos de manera incorrecta\n");
@@ -106,6 +107,6 @@ int	main(int argc, char **argv, char **env)
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
-	return (0);
+	waitpid(pid2, &status, 0);
+	return (WEXITSTATUS(status));
 }
