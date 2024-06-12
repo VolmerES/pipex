@@ -6,7 +6,7 @@
 /*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:42:35 by jdelorme          #+#    #+#             */
-/*   Updated: 2024/06/04 14:28:55 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:00:53 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,14 @@ char	*ft_find_path(char **cmd, char **env)
 	while (env[i] && ft_strnstr(env[i], "PATH=", 5) == 0)
 		i++;
 	if (env[i] == NULL)
-		return NULL;
+		return (NULL);
 	path = ft_split(env[i] + 5, ':');
 	res_path = ft_access_check(cmd, path);
+	if (res_path == NULL)
+	{
+		ft_free_split(path);
+		return (NULL);
+	}
 	ft_free_split(path);
 	return (res_path);
 }

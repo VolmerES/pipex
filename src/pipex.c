@@ -6,7 +6,7 @@
 /*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:35:18 by volmer            #+#    #+#             */
-/*   Updated: 2024/06/04 14:39:25 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:50:20 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef enum
 	COMMAND_ERROR,
 	MEMORY_ERROR
 } t_error;
-
 
 void exit_child(t_error code)
 {
@@ -40,8 +39,14 @@ void	ft_execute(char *cmd, char **env)
 	char	**command;
 	char	*path;
 
+	if (cmd == NULL || cmd[0] == '\0') {
+		fprintf(stderr, "Command is empty\n");
+		exit(1);
+	}
+
 	command = ft_split(cmd, ' ');
 	path = ft_find_path(command, env);
+	while (1) ;
 	if (execve(path, command, env) == -1)
 	{
 		perror("Execve failed");
@@ -53,23 +58,27 @@ void	ft_child_process_one(char **argv, char **env, int *fd)
 {
 	int	filein;
 
-	filein = open(argv[1], O_RDONLY);
 	close(fd[0]);
+	filein = open(argv[1], O_RDONLY);
 	if (filein == -1)
+	{
 		perror("Filein crashed ");
+		close(fd[1]);
+		exit (1);
+	}
 	dup2(filein, STDIN_FILENO);
 	close(filein);
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
-	ft_execute(argv[2], env);
+	ft_execute(argv[2], env); 
 }
 
 void	ft_child_process_two(char **argv, char **env, int *fd)
 {
 	int	fileout;
 
-	fileout = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	close(fd[1]);
+	fileout = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC);
 	if (fileout == -1)
 	{
 		perror("Filein crashed");
@@ -88,25 +97,38 @@ int	main(int argc, char **argv, char **env)
 	int	fd[2];
 	int	pid1;
 	int	pid2;
-	int	status;
+	int	status1;
+	int status2;
 
 	if (argc != 5)
+	{
 		perror("Argumentos introducidos de manera incorrecta\n");
+		exit(1); 
+	}
 	if (pipe(fd) == -1)
+	{
 		perror("Pipe crashed");
+		exit(1);
+	}
 	pid1 = fork();
 	if (pid1 == -1)
+	{
 		perror("Fork crashed ");
+		exit(1);
+	}
 	if (pid1 == 0)
 		ft_child_process_one(argv, env, fd);
 	pid2 = fork();
 	if (pid2 == -1)
+	{
 		perror("Fork crashed\n");
+		exit(1);
+	}
 	if (pid2 == 0)
 		ft_child_process_two(argv, env, fd);
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, &status, 0);
-	return (WEXITSTATUS(status));
+	waitpid(pid1, &status1, 0);
+	waitpid(pid2, &status2, 0);
+	return (WEXITSTATUS(status2));
 }
