@@ -6,33 +6,12 @@
 /*   By: volmer <volmer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:35:18 by volmer            #+#    #+#             */
-/*   Updated: 2024/06/13 13:59:01 by volmer           ###   ########.fr       */
+/*   Updated: 2024/06/13 14:44:39 by volmer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "../inc/pipex.h"
-
-
-typedef enum
-{
-	FILE_PROBLEM,
-	COMMAND_ERROR,
-	MEMORY_ERROR
-} t_error;
-
-void exit_child(t_error code)
-{
-	if (code == FILE_PROBLEM)
-		perror("File problem");	
-	else if (code == COMMAND_ERROR)
-		perror("Command error");
-	else if (code == MEMORY_ERROR)
-		perror("Memory error");
-	else
-		printf("Error");
-	exit(1);
-}
 
 void	ft_execute(char *cmd, char **env)
 {
@@ -61,9 +40,8 @@ void	ft_child_process_one(char **argv, char **env, int *fd)
 	filein = open(argv[1], O_RDONLY);
 	if (filein == -1)
 	{
-		perror("Filein crashed ");
 		close(fd[1]);
-		exit (1);
+		exit_child(FILE_PROBLEM);
 	}
 	dup2(filein, STDIN_FILENO);
 	close(filein);
@@ -80,9 +58,8 @@ void	ft_child_process_two(char **argv, char **env, int *fd)
 	fileout = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC);
 	if (fileout == -1)
 	{
-		perror("Filein crashed");
 		close(fd[0]);
-		exit(1);
+		exit_child(FILE_PROBLEM);
 	}
 	dup2(fileout, STDOUT_FILENO);
 	close(fileout);
@@ -99,29 +76,17 @@ int	main(int argc, char **argv, char **env)
 	int status2;
 
 	if (argc != 5)
-	{
-		perror("Argumentos introducidos de manera incorrecta\n");
-		exit(1); 
-	}
+		exit_child(INVALID_ARGS);
 	if (pipe(fd) == -1)
-	{
-		perror("Pipe crashed");
-		exit(1);
-	}
+		exit_child(PIPE_ERROR);
 	pid1 = fork();
 	if (pid1 == -1)
-	{
-		perror("Fork crashed ");
-		exit(1);
-	}
+		exit_child(FORK_ERROR);
 	if (pid1 == 0)
 		ft_child_process_one(argv, env, fd);
 	pid2 = fork();
 	if (pid2 == -1)
-	{
-		perror("Fork crashed\n");
-		exit(1);
-	}
+		exit_child(FORK_ERROR);
 	if (pid2 == 0)
 		ft_child_process_two(argv, env, fd);
 	close(fd[0]);

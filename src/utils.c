@@ -6,12 +6,31 @@
 /*   By: volmer <volmer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:42:35 by jdelorme          #+#    #+#             */
-/*   Updated: 2024/06/13 14:17:06 by volmer           ###   ########.fr       */
+/*   Updated: 2024/06/13 14:44:43 by volmer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
 
+
+void exit_child(t_error code)
+{
+	if (code == FILE_PROBLEM)
+		perror("File problem");	
+	else if (code == COMMAND_ERROR)
+		perror("Command error");
+	else if (code == MEMORY_ERROR)
+		perror("Memory error");
+	else if (code == INVALID_ARGS)
+		perror("Invalid arguments");
+	else if (code == PIPE_ERROR)
+		perror("Pipe error");
+	else if (code == FORK_ERROR)
+		perror("Fork error");
+	else
+		printf("Unknown error");
+	exit(1);
+}
 void	ft_free_split(char **split)
 {
 	int	i;

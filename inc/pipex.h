@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
+/*   By: volmer <volmer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:44:28 by jdelorme          #+#    #+#             */
-/*   Updated: 2024/06/04 14:19:49 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:44:26 by volmer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/wait.h>
+typedef enum
+{
+	FILE_PROBLEM,
+	COMMAND_ERROR,
+	MEMORY_ERROR,
+	INVALID_ARGS,
+	PIPE_ERROR,
+	FORK_ERROR
+} t_error;
 
 char	*ft_access_check(char **cmd, char **path);
 char	*ft_find_path(char **cmd, char **env);
