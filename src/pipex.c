@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
+/*   By: volmer <volmer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:35:18 by volmer            #+#    #+#             */
-/*   Updated: 2024/06/12 14:50:20 by jdelorme         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:59:01 by volmer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	ft_execute(char *cmd, char **env)
 
 	command = ft_split(cmd, ' ');
 	path = ft_find_path(command, env);
-	while (1) ;
 	if (execve(path, command, env) == -1)
 	{
 		perror("Execve failed");
@@ -97,7 +96,6 @@ int	main(int argc, char **argv, char **env)
 	int	fd[2];
 	int	pid1;
 	int	pid2;
-	int	status1;
 	int status2;
 
 	if (argc != 5)
@@ -128,7 +126,7 @@ int	main(int argc, char **argv, char **env)
 		ft_child_process_two(argv, env, fd);
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(pid1, &status1, 0);
+	waitpid(pid1, NULL, 0);
 	waitpid(pid2, &status2, 0);
 	return (WEXITSTATUS(status2));
 }
