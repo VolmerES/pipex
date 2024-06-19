@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: volmer <volmer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:35:18 by volmer            #+#    #+#             */
-/*   Updated: 2024/06/13 14:44:39 by volmer           ###   ########.fr       */
+/*   Updated: 2024/06/19 12:45:38 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	ft_execute(char *cmd, char **env)
 	char	**command;
 	char	*path;
 
-	if (cmd == NULL || cmd[0] == '\0') {
+	if (cmd == NULL || cmd[0] == '\0')
+	{
 		fprintf(stderr, "Command is empty\n");
 		exit(1);
 	}
-
 	command = ft_split(cmd, ' ');
 	path = ft_find_path(command, env);
 	if (execve(path, command, env) == -1)
@@ -47,7 +47,7 @@ void	ft_child_process_one(char **argv, char **env, int *fd)
 	close(filein);
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
-	ft_execute(argv[2], env); 
+	ft_execute(argv[2], env);
 }
 
 void	ft_child_process_two(char **argv, char **env, int *fd)
@@ -73,7 +73,7 @@ int	main(int argc, char **argv, char **env)
 	int	fd[2];
 	int	pid1;
 	int	pid2;
-	int status2;
+	int	status2;
 
 	if (argc != 5)
 		exit_child(INVALID_ARGS);

@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: volmer <volmer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdelorme <jdelorme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:42:35 by jdelorme          #+#    #+#             */
-/*   Updated: 2024/06/13 14:44:43 by volmer           ###   ########.fr       */
+/*   Updated: 2024/06/19 12:47:23 by jdelorme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
 
-
-void exit_child(t_error code)
+void	exit_child(t_error code)
 {
 	if (code == FILE_PROBLEM)
-		perror("File problem");	
+		perror("File problem");
 	else if (code == COMMAND_ERROR)
 		perror("Command error");
 	else if (code == MEMORY_ERROR)
@@ -31,6 +30,7 @@ void exit_child(t_error code)
 		printf("Unknown error");
 	exit(1);
 }
+
 void	ft_free_split(char **split)
 {
 	int	i;
@@ -43,6 +43,7 @@ void	ft_free_split(char **split)
 	}
 	free(split);
 }
+
 char	*ft_access_check(char **cmd, char **path)
 {
 	char	*ac;
@@ -53,7 +54,7 @@ char	*ft_access_check(char **cmd, char **path)
 	if (ft_strchr(*cmd, '/') && (access(*cmd, X_OK) == 0))
 		return (*cmd);
 	if (ft_strchr(*cmd, '/') && access(*cmd, X_OK))
-		return (cmd[0]); 
+		return (cmd[0]);
 	while (path[i])
 	{
 		slash = ft_strjoin("/", cmd[0]);
@@ -72,7 +73,7 @@ char	*ft_find_path(char **cmd, char **env)
 	char	*res_path;
 
 	i = 0;
-	if (access(cmd[0], 	F_OK) == 0&& ft_strchr(cmd[0], '/'))
+	if (access(cmd[0], F_OK) == 0 && ft_strchr(cmd[0], '/'))
 		return (ft_strdup(cmd[0]));
 	while (env[i] && ft_strnstr(env[i], "PATH=", 5) == 0)
 		i++;
